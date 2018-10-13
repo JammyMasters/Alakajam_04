@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c9edf67aa8dd0242992071ac104d3a6, type: 3}
+  m_Script: {fileID: 11500000, guid: bc12a837b01e0b945b0ebb804e874a6c, type: 3}
   m_Name: Blank_02
   m_EditorClassIdentifier: 
-  SpawnChance: 1
+  Type: 0
   Prefab: {fileID: 1602448637137030, guid: a4ad20d3dc7783d45a0228371a2aed8e, type: 2}

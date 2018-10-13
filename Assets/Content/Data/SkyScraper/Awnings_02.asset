@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c9edf67aa8dd0242992071ac104d3a6, type: 3}
+  m_Script: {fileID: 11500000, guid: bc12a837b01e0b945b0ebb804e874a6c, type: 3}
   m_Name: Awnings_02
   m_EditorClassIdentifier: 
-  Type: 1
+  Type: 2
   Prefab: {fileID: 1471974931019614, guid: 9e7cd8a7019c8304e81c3061dd263257, type: 2}

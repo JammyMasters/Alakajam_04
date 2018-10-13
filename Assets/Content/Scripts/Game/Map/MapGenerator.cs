@@ -13,11 +13,13 @@ public class MapGenerator : MonoBehaviour
 
     public bool GenerateInEditMode = false;
 
+    private GameObject m_piecesGameObject;
+
     public void Start()
     {
         if (Application.isPlaying)
         {
-            StartCoroutine(Generate());
+            Generate();
         }
     }
 
@@ -30,8 +32,16 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public IEnumerator Generate()
+    private void Generate()
     {
+        if (m_piecesGameObject != null)
+        {
+            DestroyImmediate(m_piecesGameObject);
+        }
+
+        m_piecesGameObject = new GameObject("Pieces");
+        m_piecesGameObject.transform.parent = transform;
+
         var currentHeight = 0.0f;
         var nonRoofTops = MapPieces.Where(x => x.Type != MapPiece.PieceType.RoofTop).ToArray();
         var roofPieces = MapPieces.Where(x => x.Type == MapPiece.PieceType.RoofTop).ToArray();
@@ -50,15 +60,13 @@ public class MapGenerator : MonoBehaviour
         }
 
         Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f));
-
-        yield break;
     }
 
     private float SpawnMapPieces(MapPiece[] pieces, float yPosition)
     {
-        var randomPiece = pieces[UnityEngine.Random.Range(0, pieces.Length)];
+        var randomPiece = pieces[Random.Range(0, pieces.Length)];
         var newPosition = new Vector3(0.0f, yPosition, 0.0f);
-        var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, transform);
+        var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, m_piecesGameObject.transform);
         return pieceGeometry.GetComponent<MeshRenderer>().bounds.size.y;
     }
 }
