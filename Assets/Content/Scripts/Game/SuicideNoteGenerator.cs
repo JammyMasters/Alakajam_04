@@ -80,9 +80,10 @@ public class SuicideNoteGenerator : MonoBehaviour, IGameStateObserver
 
         RandomiseGoal();
 
-        SuicideNodeText.text += GenerateSalutation() + Environment.NewLine;
-        SuicideNodeText.text += GenerateMotivation() + Environment.NewLine;
-        SuicideNodeText.text += GenerateClosing();
+        var suicideNote = GenerateSalutation() + Environment.NewLine;
+        suicideNote += GenerateMotivation() + Environment.NewLine;
+        suicideNote += GenerateClosing();
+        SuicideNodeText.text = suicideNote;
     }
 
     private string GenerateSection(IEnumerable<SuicideNoteElements> elements)
