@@ -23311,32 +23311,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SuicideNodeText: {fileID: 929452411}
-  Salutations:
-  - Asset: {fileID: 4900000, guid: 122a099707c0c664faf6f2b1ccc2a5c6, type: 3}
-    Intentions: 1
-  - Asset: {fileID: 4900000, guid: b93a4a2487fdf35408ba0c296f3124fa, type: 3}
-    Intentions: 2
-  - Asset: {fileID: 4900000, guid: 9ac4b5436ba390347929093ab517684d, type: 3}
-    Intentions: 4
-  Motivations:
-  - Asset: {fileID: 4900000, guid: 20b5915d22b59bd4786085a69dee8747, type: 3}
-    Intentions: 1
-  - Asset: {fileID: 4900000, guid: e3b8b536fad1c144c9306f4010bfbfc6, type: 3}
-    Intentions: 2
-  Closings:
-  - Asset: {fileID: 4900000, guid: 49bd3b21c0c77ca42a22a2cc89c04b42, type: 3}
-    Intentions: 1
-  - Asset: {fileID: 4900000, guid: 82b8636a9433dca4e9e9e6290917c3f1, type: 3}
-    Intentions: 2
-  - Asset: {fileID: 4900000, guid: 4826d76102d8dd44f9dc6b24c28f38aa, type: 3}
-    Intentions: 4
-  Templates:
-  - Asset: {fileID: 4900000, guid: f39b74a4f18ddde4b9dd251399a3d1d6, type: 3}
-    Name: adjective
-  - Asset: {fileID: 4900000, guid: cefbf9221295e8c4ea28f43016eac36d, type: 3}
-    Name: insult
-  - Asset: {fileID: 4900000, guid: a63b3bfeb9a786e4497f22e3927e1f25, type: 3}
-    Name: reason
 --- !u!1 &1353137590
 GameObject:
   m_ObjectHideFlags: 0
@@ -27778,6 +27752,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1349349083}
+  - {fileID: 1826117282}
   m_Father: {fileID: 706987649}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -30323,6 +30298,81 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1824096381}
   m_Mesh: {fileID: 4300450, guid: ac2ccb84ba0a86546bbf2b4013a00e9e, type: 3}
+--- !u!1 &1826117281
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1826117282}
+  - component: {fileID: 1826117284}
+  - component: {fileID: 1826117283}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1826117282
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1826117281}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1691268498}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -380, y: 270}
+  m_SizeDelta: {x: 734.2, y: 309.6}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1826117283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1826117281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 3b243364578a0fc44a368e02a1b59e22, type: 3}
+    m_FontSize: 200
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 200
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: SuiSalto
+--- !u!222 &1826117284
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1826117281}
+  m_CullTransparentMesh: 0
 --- !u!1 &1832115829
 GameObject:
   m_ObjectHideFlags: 0
