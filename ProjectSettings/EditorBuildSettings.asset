@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Content/Scenes/Intro.unity
-    guid: be16c23b1ec7fb34e8278b11b2a1f987
+    path: Assets/Content/Scenes/SuicideNote.unity
+    guid: 5b2093e870696ca4782f69644835e914
   - enabled: 1
-    path: Assets/Content/Scenes/Game.unity
+    path: Assets/Content/Scenes/Falling.unity
     guid: 9c6e7e9ef90486345bff664821722ebc
+  - enabled: 1
+    path: Assets/Content/Scenes/NewspaperFlash.unity
+    guid: 659b044fa9a07b3459e495cff583faa5
   m_configObjects: {}

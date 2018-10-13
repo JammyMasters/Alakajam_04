@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // Derived from: https://github.com/genecyber/Mumbles/blob/master/Suicide-note.g
-public class SuicideNote : MonoBehaviour, IGameStateObserver
+public class SuicideNoteGenerator : MonoBehaviour
 {
     public abstract class AssetBasedRandomValueObject
     {
@@ -75,10 +76,9 @@ public class SuicideNote : MonoBehaviour, IGameStateObserver
         SeekingAttention
     }
 
-    [System.Flags]
-    public enum Recipient
+    public enum Recipient : uint
     {
-        Undefined,
+        Undefined = 1,
         Mom,
         Dad,
         Son,
@@ -89,9 +89,9 @@ public class SuicideNote : MonoBehaviour, IGameStateObserver
         Boss
     }
 
-    public Intention NoteIntention { get; private set; }
+    public static Intention NoteIntention { get; private set; }
 
-    public Recipient NoteRecipient { get; private set; }
+    public static Recipient NoteRecipient { get; private set; }
 
     public Text SuicideNodeText;
 
@@ -103,6 +103,28 @@ public class SuicideNote : MonoBehaviour, IGameStateObserver
 
     public Template[] Templates;
 
+    public void Start()
+    {
+        RandomiseContent();
+        GenerateText();
+    }
+
+    public void Update()
+    {
+        if (Input.GetKey(KeyCode.Return))
+        {
+            SceneManager.LoadScene("Falling");
+        }
+    }
+
+    private void GenerateText()
+    {
+        var @string = GetSectionString(Salutations) + Environment.NewLine;
+        @string += GetSectionString(Motivations) + Environment.NewLine;
+        @string += GetSectionString(Closings);
+        SuicideNodeText.text = @string;
+    }
+
     private void RandomiseContent()
     {
         var intentions = Enum.GetValues(typeof(Intention));
@@ -111,23 +133,8 @@ public class SuicideNote : MonoBehaviour, IGameStateObserver
         if (NoteIntention == Intention.RevengeAgainstRecipient)
         {
             var recipients = Enum.GetValues(typeof(Recipient));
-            NoteRecipient = (Recipient)recipients.GetValue(UnityEngine.Random.Range(0, recipients.Length));
+            NoteRecipient = (Recipient)recipients.GetValue(UnityEngine.Random.Range(1, recipients.Length));
         }
-    }
-
-    public void OnEnterState(GameState state)
-    {
-        if (state != GameState.SuicideNote)
-        {
-            return;
-        }
-
-        RandomiseContent();
-
-        var @string = GetSectionString(Salutations) + Environment.NewLine;
-        @string += GetSectionString(Motivations) + Environment.NewLine;
-        @string += GetSectionString(Closings);
-        SuicideNodeText.text = @string;
     }
 
     private string GetSectionString(IEnumerable<Sections> elements)
@@ -165,9 +172,5 @@ public class SuicideNote : MonoBehaviour, IGameStateObserver
         }
 
         return Regex.Replace(@string, $"%{template.Name}%", template.Value, RegexOptions.Multiline | RegexOptions.IgnoreCase);
-    }
-
-    public void OnLeaveState(GameState state)
-    {
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class MapGenerator : MonoBehaviour, IGameStateObserver
+public class MapGenerator : MonoBehaviour
 {
     private const string c_piecesGameObjectName = "Pieces";
 
@@ -13,6 +13,14 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
     public PlayerController Player;
 
     public bool GenerateInEditMode = false;
+
+    public void Start()
+    {
+        if (Application.isPlaying)
+        {
+            Generate();
+        }
+    }
 
     public void Update()
     {
@@ -79,19 +87,5 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
         var newPosition = new Vector3(0.0f, yPosition, 0.0f);
         var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, piecesGameObject.transform);
         return pieceGeometry.GetComponent<MeshRenderer>().bounds;
-    }
-
-    public void OnLeaveState(GameState state)
-    {
-        DestroyPiecesGameObject();
-    }
-
-    public void OnEnterState(GameState state)
-    {
-        if (state != GameState.Falling)
-        {
-            return;
-        }
-        Generate();
     }
 }

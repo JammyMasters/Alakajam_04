@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class PlayerController : MonoBehaviour
     public float TimeToTerminalVelocity = 2.0f;
     public float LeanRotationScale = 1.0f;
     public bool KillPlayerOnBodyCollision;
+
+    public bool IsDead { get; private set; }
 
     public void Start()
     {
@@ -93,6 +96,8 @@ public class PlayerController : MonoBehaviour
             limb.Detatch();
             limb.EnableBloodParticles(false);
         }
+
+        IsDead = true;
     }
 
     /// <summary>

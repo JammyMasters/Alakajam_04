@@ -4,31 +4,31 @@ using System.Linq;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class CrowdSpawner : MonoBehaviour, IGameStateObserver
+public class CrowdSpawner : MonoBehaviour
 {
     [Serializable]
     public class SuicideNoteRecipientPrefabOptions
     {
         [EnumFlags]
-        public SuicideNote.Recipient Recipients;
+        public SuicideNoteGenerator.Recipient Recipients;
 
         public GameObject[] Prefabs;
 
         public bool IsEmpty => Prefabs.Length == 0;
 
         // Source: https://forum.unity.com/threads/multiple-enum-select-from-inspector.184729/
-        public List<SuicideNote.Recipient> ApplicableRecipients
+        public List<SuicideNoteGenerator.Recipient> ApplicableRecipients
         {
             get
             {
-                var applicableRecipients = new List<SuicideNote.Recipient>();
-                var recipients = Enum.GetValues(typeof(SuicideNote.Recipient));
+                var applicableRecipients = new List<SuicideNoteGenerator.Recipient>();
+                var recipients = Enum.GetValues(typeof(SuicideNoteGenerator.Recipient));
                 for (int i = 0; i < recipients.Length; i++)
                 {
                     int layer = 1 << i;
                     if (((int)Recipients & layer) != 0)
                     {
-                        applicableRecipients.Add((SuicideNote.Recipient)recipients.GetValue(i));
+                        applicableRecipients.Add((SuicideNoteGenerator.Recipient)recipients.GetValue(i));
                     }
                 }
                 return applicableRecipients;
@@ -46,8 +46,6 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
 
     private const string c_crowdGameObjectName = "Crowd";
 
-    public SuicideNote SuicideNote;
-
     public int MinNumberOfPeople;
 
     public int MaxNumberOfPeople;
@@ -60,6 +58,14 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
 
     public bool SpawnInEditMode;
 
+    public void Start()
+    {
+        if (Application.isPlaying)
+        {
+            Spawn();
+        }
+    }
+
     public void Update()
     {
         if (Application.isEditor && SpawnInEditMode)
@@ -67,16 +73,6 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
             Spawn();
             SpawnInEditMode = false;
         }
-    }
-
-    public void OnEnterState(GameState state)
-    {
-        if (state != GameState.Falling)
-        {
-            return;
-        }
-
-        Spawn();
     }
 
     private void Spawn()
@@ -87,7 +83,7 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
         crowdGameObject.transform.parent = transform;
 
         var maxNumberOfPeople = MaxNumberOfPeople;
-        if (SuicideNote.NoteIntention == SuicideNote.Intention.RevengeAgainstRecipient)
+        if (SuicideNoteGenerator.NoteIntention == SuicideNoteGenerator.Intention.RevengeAgainstRecipient)
         {
             SpawnSuicideNoteRecipient(crowdGameObject);
             maxNumberOfPeople--;
@@ -111,7 +107,7 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
 
     private void SpawnSuicideNoteRecipient(GameObject crowdGameObject)
     {
-        var prefabOptions = PrefabOptionsPerRecipientType.Where(x => x.ApplicableRecipients.Contains(SuicideNote.NoteRecipient)).FirstOrDefault();
+        var prefabOptions = PrefabOptionsPerRecipientType.Where(x => x.ApplicableRecipients.Contains(SuicideNoteGenerator.NoteRecipient)).FirstOrDefault();
         if (prefabOptions == null)
         {
             return;
@@ -149,15 +145,5 @@ public class CrowdSpawner : MonoBehaviour, IGameStateObserver
                 DestroyImmediate(piecesGameObject);
             }
         }
-    }
-
-    public void OnLeaveState(GameState state)
-    {
-        if (state != GameState.Falling)
-        {
-            return;
-        }
-
-        DestroyCrowdGameObject();
     }
 }
