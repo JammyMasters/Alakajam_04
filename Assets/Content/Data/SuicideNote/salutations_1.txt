@@ -1,2 +1,2 @@
-Dear %insult% %person%,
-To my %insult% %person%,
+Dear %insult% %recipient%,
+To my %insult% %recipient%,

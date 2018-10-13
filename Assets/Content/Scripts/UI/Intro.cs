@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class IntroUI : MonoBehaviour
+public class Intro : MonoBehaviour
 {
     public void StartButton_OnClick()
     {

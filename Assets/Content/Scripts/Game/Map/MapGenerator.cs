@@ -4,6 +4,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour, IGameStateObserver
 {
+    private const string c_piecesGameObjectName = "Pieces";
+
     public int MapHeight = 100;
 
     public MapPiece[] MapPieces;
@@ -25,7 +27,7 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
     {
         DestroyPiecesGameObject();
 
-        var piecesGameObject = new GameObject("Pieces");
+        var piecesGameObject = new GameObject(c_piecesGameObjectName);
         piecesGameObject.transform.parent = transform;
 
         var currentHeight = 0.0f;
@@ -57,7 +59,7 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
 
     private void DestroyPiecesGameObject()
     {
-        var piecesGameObject = GetPiecesGameObject();
+        var piecesGameObject = transform.Find("Pieces")?.gameObject;
         if (piecesGameObject != null)
         {
             if (Application.isPlaying)
@@ -69,11 +71,6 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
                 DestroyImmediate(piecesGameObject);
             }
         }
-    }
-
-    private GameObject GetPiecesGameObject()
-    {
-        return transform.Find("Pieces")?.gameObject;
     }
 
     private Bounds SpawnMapPieces(MapPiece[] pieces, float yPosition, GameObject piecesGameObject)
@@ -91,7 +88,7 @@ public class MapGenerator : MonoBehaviour, IGameStateObserver
 
     public void OnEnterState(GameState state)
     {
-        if (state != GameState.FALLING)
+        if (state != GameState.Falling)
         {
             return;
         }

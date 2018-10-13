@@ -10,7 +10,7 @@ public class KillVolume : MonoBehaviour
         if (playerController != null)
         {
             playerController.KillPlayer();
-            GameStateMachine.Transition(GameState.NEWSPAPER_FLASH);
+            GameStateMachine.Transition(GameState.NewspaperFlash);
         }
     }
 }

@@ -15,13 +15,13 @@ public class GameStateMachine : MonoBehaviour
 
     public StateObserverGroup[] StateObserverGroups;
 
-    private GameState m_currentState = GameState.IDLE;
+    private GameState m_currentState = GameState.Start;
 
     public GameState CurrentState { get; }
 
     private void Start()
     {
-        Transition(GameState.SUICIDE_NOTE);
+        Transition(GameState.SuicideNote);
     }
 
     private void ActivateGameObjects(IEnumerable<GameObject> observers)
@@ -101,16 +101,16 @@ public class GameStateMachine : MonoBehaviour
     {
         switch (m_currentState)
         {
-            case GameState.SUICIDE_NOTE:
+            case GameState.SuicideNote:
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    Transition(GameState.FALLING);
+                    Transition(GameState.Falling);
                 }
                 break;
-            case GameState.NEWSPAPER_FLASH:
+            case GameState.NewspaperFlash:
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
-                    Transition(GameState.SUICIDE_NOTE);
+                    Transition(GameState.SuicideNote);
                 }
                 break;
         }
