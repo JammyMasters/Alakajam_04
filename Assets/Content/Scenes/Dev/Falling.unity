@@ -6277,7 +6277,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-1348768
+  m_Name: pb_Mesh13262
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -11828,17 +11828,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 969593472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5e8f31bd815184fae7e026ad0cbf2b, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cf356d074bc1d744831e5ca484b7ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapHeight: 800
+  MapHeight: 100
   MapPieces:
-  - {fileID: 11400000, guid: 7d81bcf670cc28b4ab71fee29c126e31, type: 2}
+  - {fileID: 11400000, guid: d64f64243188e664c81e168b25b52827, type: 2}
   - {fileID: 11400000, guid: 7d5b1e34660130d47bcdca5090e3571e, type: 2}
   - {fileID: 11400000, guid: d1bd822b8ee27894eaaabd46e77b208c, type: 2}
-  - {fileID: 11400000, guid: 7d5b1e34660130d47bcdca5090e3571e, type: 2}
   - {fileID: 11400000, guid: f17af212994b96d4ca5592d2cd10ee55, type: 2}
   Player: {fileID: 1921201416}
+  GenerateInEditMode: 0
 --- !u!1 &1047093513
 GameObject:
   m_ObjectHideFlags: 0

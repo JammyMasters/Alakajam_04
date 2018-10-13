@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc12a837b01e0b945b0ebb804e874a6c, type: 3}
   m_Name: Awnings_01
   m_EditorClassIdentifier: 
-  Type: 2
+  Type: 1
   Prefab: {fileID: 1460511483456702, guid: 7524e3ce84c7c9742a346d9301d83906, type: 2}
