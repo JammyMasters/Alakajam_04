@@ -93,8 +93,6 @@ public class PlayerController : MonoBehaviour
             limb.Detatch();
             limb.EnableBloodParticles(false);
         }
-
-        StartTimeSlowDown(2.0f);
     }
 
     /// <summary>
@@ -157,17 +155,5 @@ public class PlayerController : MonoBehaviour
         var fallScalar = Mathf.Min(1.0f, fallTime / TimeToTerminalVelocity);
         var fallSpeed = Mathf.Lerp(StartFallSpeed, MaxFallSpeed - StartFallSpeed, fallScalar) * Time.deltaTime;
         m_playerPosition -= new Vector3(0.0f, fallSpeed, 0.0f);
-    }
-
-    public void StartTimeSlowDown(float time)
-    {
-        StartCoroutine(TimeSlowDown(time));
-    }
-
-    private IEnumerator TimeSlowDown(float time)
-    {
-        Time.timeScale = 0.25f;
-        yield return new WaitForSecondsRealtime(time);
-        Time.timeScale = 1.0f;
     }
 }
