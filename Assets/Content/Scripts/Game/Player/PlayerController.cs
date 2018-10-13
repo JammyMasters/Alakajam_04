@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     private float m_startRotationTime;
 
     private float m_lastSpeedReset;
-    private SpringJoint[] m_limbJoints;
+    private PlayerLimb[] m_limbs;
 
     public float HorizontalSpeed = 1.0f;
     public float StartFallSpeed = 2.0f;
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     public void Start()
     {
-        m_limbJoints = GetComponentsInChildren<SpringJoint>();
+        m_limbs = GetComponentsInChildren<PlayerLimb>();
     }
 
     public void Update()
@@ -87,34 +88,13 @@ public class PlayerController : MonoBehaviour
     {
         m_isActive = false;
 
-        var limbBodies = new HashSet<Rigidbody>();
-        foreach (var joint in m_limbJoints)
+        foreach (var limb in m_limbs)
         {
-            if (joint == null)
-            {
-                // Already broken limbs.
-                continue;
-            }
-
-            var limbBody = joint.GetComponent<Rigidbody>();
-            if (limbBody != null)
-            {
-                limbBodies.Add(limbBody);
-            }
-
-            Destroy(joint);
+            limb.Detatch();
+            limb.EnableBloodParticles(false);
         }
 
-        const float killForce = 4.0f;
-        foreach (var limbBody in limbBodies)
-        {
-            limbBody.AddForce(
-                new Vector3(
-                    Random.Range(-killForce, killForce), 
-                    Random.Range(-killForce, killForce), 
-                    Random.Range(-killForce, killForce)), 
-                ForceMode.Impulse);
-        }
+        StartTimeSlowDown(2.0f);
     }
 
     /// <summary>
@@ -139,7 +119,7 @@ public class PlayerController : MonoBehaviour
             rotateTarget = new Vector3(0.0f, 10.0f, 0.0f);
         }
 
-        var moveHorizontal = Input.GetAxis("Horizontal") * HorizontalSpeed;
+        var moveHorizontal = horizontalInput * HorizontalSpeed * GetLimbModifier();
         var oldPosition = m_playerPosition;
         m_playerPosition += new Vector3(0.0f, 0.0f, moveHorizontal * Time.deltaTime);
         if (m_playerPosition.z <= m_mapBounds.x || m_playerPosition.z >= m_mapBounds.y)
@@ -166,11 +146,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private float GetLimbModifier()
+    {
+        return (m_limbs.Count(x => x.IsAttched) + 2.0f) / m_limbs.Length;
+    }
+
     private void HandleGravity()
     {
         var fallTime = Time.time - m_lastSpeedReset;
         var fallScalar = Mathf.Min(1.0f, fallTime / TimeToTerminalVelocity);
         var fallSpeed = Mathf.Lerp(StartFallSpeed, MaxFallSpeed - StartFallSpeed, fallScalar) * Time.deltaTime;
         m_playerPosition -= new Vector3(0.0f, fallSpeed, 0.0f);
+    }
+
+    public void StartTimeSlowDown(float time)
+    {
+        StartCoroutine(TimeSlowDown(time));
+    }
+
+    private IEnumerator TimeSlowDown(float time)
+    {
+        Time.timeScale = 0.25f;
+        yield return new WaitForSecondsRealtime(time);
+        Time.timeScale = 1.0f;
     }
 }
