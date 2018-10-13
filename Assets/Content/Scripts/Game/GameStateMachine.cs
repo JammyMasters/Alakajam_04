@@ -68,7 +68,7 @@ public class GameStateMachine : MonoBehaviour
 
     private IEnumerable<IGameStateObserver> GetGameStateObservers()
     {
-        return StateObserverGroups.SelectMany(x => x.Observers).Select(x => x.GetComponent<IGameStateObserver>()).Where(x => x != null);
+        return StateObserverGroups.SelectMany(x => x.Observers).SelectMany(x => x.GetComponents<IGameStateObserver>()).Where(x => x != null);
     }
 
     private void ActivateGameObjectsByState(GameState state)

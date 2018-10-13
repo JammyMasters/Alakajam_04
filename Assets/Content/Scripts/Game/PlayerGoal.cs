@@ -1,4 +1,5 @@
-﻿public enum PlayerGoal
+﻿[System.Flags]
+public enum PlayerGoal
 {
     KillSpecificPerson,
     KillManyPeople,

@@ -145,8 +145,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.3, y: 1.5}
-  m_SizeDelta: {x: 281.4, y: 394}
+  m_AnchoredPosition: {x: 6.4, y: 4.8}
+  m_SizeDelta: {x: 372.3, y: 227.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &11857740
 MonoBehaviour:
@@ -750,7 +750,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dd0bd8233f1b0d4582fe8049568b6a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Text: {fileID: 11857740}
+  m_playerGoal: 0
+  SuicideNodeText: {fileID: 11857740}
+  PerGoalSalutations:
+  - Text: {fileID: 4900000, guid: 122a099707c0c664faf6f2b1ccc2a5c6, type: 3}
+    Goals: 5
+  - Text: {fileID: 4900000, guid: b93a4a2487fdf35408ba0c296f3124fa, type: 3}
+    Goals: 2
+  - Text: {fileID: 4900000, guid: 9ac4b5436ba390347929093ab517684d, type: 3}
+    Goals: 8
+  PerGoalMotivations:
+  - Text: {fileID: 4900000, guid: 20b5915d22b59bd4786085a69dee8747, type: 3}
+    Goals: 5
+  - Text: {fileID: 4900000, guid: e3b8b536fad1c144c9306f4010bfbfc6, type: 3}
+    Goals: 2
+  PerGoalClosings:
+  - Text: {fileID: 4900000, guid: 49bd3b21c0c77ca42a22a2cc89c04b42, type: 3}
+    Goals: 5
+  - Text: {fileID: 4900000, guid: 82b8636a9433dca4e9e9e6290917c3f1, type: 3}
+    Goals: 2
+  - Text: {fileID: 4900000, guid: 4826d76102d8dd44f9dc6b24c28f38aa, type: 3}
+    Goals: 8
+  Templates:
+  - Text: {fileID: 4900000, guid: f39b74a4f18ddde4b9dd251399a3d1d6, type: 3}
+    Name: adjective
+  - Text: {fileID: 4900000, guid: cefbf9221295e8c4ea28f43016eac36d, type: 3}
+    Name: insult
+  - Text: {fileID: 4900000, guid: 813788a16389c6244bed909fb224ab18, type: 3}
+    Name: person
+  - Text: {fileID: 4900000, guid: a63b3bfeb9a786e4497f22e3927e1f25, type: 3}
+    Name: reason
 --- !u!4 &249135361
 Transform:
   m_ObjectHideFlags: 0
@@ -1135,6 +1164,7 @@ MonoBehaviour:
   StateObserverGroups:
   - State: 1
     Observers:
+    - {fileID: 284656467}
     - {fileID: 58516152}
     - {fileID: 249135359}
   - State: 2
@@ -1263,10 +1293,6 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 78114174}
-    - target: {fileID: 1101223842729738, guid: 41e961511f88c7747a5845749e10453c, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41e961511f88c7747a5845749e10453c, type: 2}
   m_IsPrefabAsset: 0
@@ -3078,7 +3104,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: da0a3843828b80443acdd631c4ca036d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c90bd268b2008b54caa7944f490cdb5d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
