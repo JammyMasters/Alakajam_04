@@ -1,31 +1,118 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class GameStateMachine : MonoBehaviour
 {
-    public PlayerController Player;
+    [Serializable]
+    public struct StateObserverGroup
+    {
+        public GameState State;
+
+        public GameObject[] Observers;
+    }
+
+    public StateObserverGroup[] StateObserverGroups;
+
+    private GameState m_currentState = GameState.IDLE;
+
+    public GameState CurrentState { get; }
 
     private void Start()
     {
-        OnEnterSuicideNote();
+        Transition(GameState.SUICIDE_NOTE);
     }
 
-    private void OnEnterSuicideNote()
+    private void ActivateGameObjects(IEnumerable<GameObject> observers)
     {
-
+        foreach (var observer in observers)
+        {
+            observer.gameObject.SetActive(true);
+        }
     }
 
-    private void OnLeaveSuicideNode()
+    private void DeactivateGameObjects(IEnumerable<GameObject> observers)
     {
-
+        foreach (var observer in observers)
+        {
+            observer.gameObject.SetActive(false);
+        }
     }
 
-    private void OnEnterOnAirMoment()
+    public void Transition(GameState state)
     {
+        if (state == m_currentState)
+        {
+            return;
+        }
 
+        // TODO: validate state transitions
+
+        ActivateGameObjectsByState(state);
+
+        foreach (var gameStateObservers in GetGameStateObservers())
+        {
+            gameStateObservers.OnLeaveState(state);
+        }
+
+        m_currentState = state;
+
+        foreach (var gameStateObservers in GetGameStateObservers())
+        {
+            gameStateObservers.OnEnterState(state);
+        }
+
+        DeactivateGameObjectsByState(state);
     }
 
-    private void OnLeaveOnAirMoment()
+    private IEnumerable<IGameStateObserver> GetGameStateObservers()
     {
+        return StateObserverGroups.SelectMany(x => x.Observers).Select(x => x.GetComponent<IGameStateObserver>()).Where(x => x != null);
+    }
 
+    private void ActivateGameObjectsByState(GameState state)
+    {
+        IEnumerable<GameObject> gameObjects = new List<GameObject>();
+        foreach (var stateObserverGroup in StateObserverGroups)
+        {
+            if (stateObserverGroup.State == state)
+            {
+                gameObjects = gameObjects.Concat(stateObserverGroup.Observers);
+            }
+        }
+        ActivateGameObjects(gameObjects);
+    }
+
+    private void DeactivateGameObjectsByState(GameState state)
+    {
+        IEnumerable<GameObject> gameObjects = new List<GameObject>();
+        foreach (var stateObserverGroup in StateObserverGroups)
+        {
+            if (stateObserverGroup.State != state)
+            {
+                gameObjects = gameObjects.Concat(stateObserverGroup.Observers);
+            }
+        }
+        DeactivateGameObjects(gameObjects);
+    }
+
+    private void Update()
+    {
+        switch (m_currentState)
+        {
+            case GameState.SUICIDE_NOTE:
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    Transition(GameState.FALLING);
+                }
+                break;
+            case GameState.NEWSPAPER_FLASH:
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    Transition(GameState.SUICIDE_NOTE);
+                }
+                break;
+        }
     }
 }

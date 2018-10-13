@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class MapGenerator : MonoBehaviour
+public class MapGenerator : MonoBehaviour, IGameStateObserver
 {
     public int MapHeight = 100;
 
@@ -14,17 +12,9 @@ public class MapGenerator : MonoBehaviour
 
     public bool GenerateInEditMode = false;
 
-    public void Start()
-    {
-        if (Application.isPlaying)
-        {
-            Generate();
-        }
-    }
-
     public void Update()
     {
-        if (GenerateInEditMode)
+        if (Application.isEditor && GenerateInEditMode)
         {
             Generate();
             GenerateInEditMode = false;
@@ -33,13 +23,9 @@ public class MapGenerator : MonoBehaviour
 
     private void Generate()
     {
-        var piecesGameObject = GetPiecesGameObject();
-        if (piecesGameObject != null)
-        {
-            DestroyImmediate(piecesGameObject);
-        }
+        DestroyPiecesGameObject();
 
-        piecesGameObject = new GameObject("Pieces");
+        var piecesGameObject = new GameObject("Pieces");
         piecesGameObject.transform.parent = transform;
 
         var currentHeight = 0.0f;
@@ -66,7 +52,23 @@ public class MapGenerator : MonoBehaviour
         var lastPieceBounds = SpawnMapPieces(roofPieces, currentHeight, piecesGameObject);
         currentHeight += lastPieceBounds.size.y;
 
-        Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f), lastPieceBounds.size.x);
+        Player.Spawn(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f), lastPieceBounds.size.x);
+    }
+
+    private void DestroyPiecesGameObject()
+    {
+        var piecesGameObject = GetPiecesGameObject();
+        if (piecesGameObject != null)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(piecesGameObject);
+            }
+            else
+            {
+                DestroyImmediate(piecesGameObject);
+            }
+        }
     }
 
     private GameObject GetPiecesGameObject()
@@ -76,9 +78,23 @@ public class MapGenerator : MonoBehaviour
 
     private Bounds SpawnMapPieces(MapPiece[] pieces, float yPosition, GameObject piecesGameObject)
     {
-        var randomPiece = pieces[UnityEngine.Random.Range(0, pieces.Length)];
+        var randomPiece = pieces[Random.Range(0, pieces.Length)];
         var newPosition = new Vector3(0.0f, yPosition, 0.0f);
         var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, piecesGameObject.transform);
         return pieceGeometry.GetComponent<MeshRenderer>().bounds;
+    }
+
+    public void OnLeaveState(GameState state)
+    {
+        DestroyPiecesGameObject();
+    }
+
+    public void OnEnterState(GameState state)
+    {
+        if (state != GameState.FALLING)
+        {
+            return;
+        }
+        Generate();
     }
 }

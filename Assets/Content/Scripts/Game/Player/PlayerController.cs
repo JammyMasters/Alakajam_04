@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         KillPlayer();
     }
 
-    public void Activate(Vector3 startPosition, float mapWidth)
+    public void Spawn(Vector3 startPosition, float mapWidth)
     {
         m_isActive = true;
 
