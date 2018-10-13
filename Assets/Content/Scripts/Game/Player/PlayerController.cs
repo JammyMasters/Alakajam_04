@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private bool m_isActive;
     private Vector3 m_playerPosition;
 
+    private Vector2 m_mapBounds;
+
     private MoveDirection m_moveDirection = MoveDirection.None;
     private Vector3 m_playerRotation;
     private Vector3 m_playerOriginalRotation;
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public float MaxFallSpeed = 10.0f;
     public float TimeToTerminalVelocity = 2.0f;
     public float LeanRotationScale = 1.0f;
+    public bool KillPlayerOnBodyCollision;
 
     public void Start()
     {
@@ -47,11 +50,31 @@ public class PlayerController : MonoBehaviour
         transform.localEulerAngles = m_playerRotation;
     }
 
-    public void Activate(Vector3 startPosition)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!m_isActive)
+        {
+            return;
+        }
+
+        if (!KillPlayerOnBodyCollision)
+        {
+            return;
+        }
+
+        KillPlayer();
+    }
+
+    public void Activate(Vector3 startPosition, float mapWidth)
     {
         m_isActive = true;
+
         m_playerPosition = startPosition;
         m_lastSpeedReset = Time.time;
+
+        mapWidth -= 2.0f;
+        m_mapBounds = new Vector2(startPosition.z - (mapWidth * 0.5f), startPosition.z + (mapWidth * 0.5f));
+
         transform.localPosition = m_playerPosition;
         m_playerRotation = transform.localEulerAngles;
         m_playerOriginalRotation = m_playerRotation;
@@ -117,7 +140,14 @@ public class PlayerController : MonoBehaviour
         }
 
         var moveHorizontal = Input.GetAxis("Horizontal") * HorizontalSpeed;
+        var oldPosition = m_playerPosition;
         m_playerPosition += new Vector3(0.0f, 0.0f, moveHorizontal * Time.deltaTime);
+        if (m_playerPosition.z <= m_mapBounds.x || m_playerPosition.z >= m_mapBounds.y)
+        {
+            m_playerPosition = oldPosition;
+            moveDirection = MoveDirection.None;
+            rotateTarget = Vector3.zero;
+        }
 
         if (moveDirection != m_moveDirection)
         {

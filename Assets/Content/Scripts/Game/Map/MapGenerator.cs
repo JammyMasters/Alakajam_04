@@ -46,20 +46,27 @@ public class MapGenerator : MonoBehaviour
         var nonRoofTops = MapPieces.Where(x => x.Type != MapPiece.PieceType.RoofTop).ToArray();
         var roofPieces = MapPieces.Where(x => x.Type == MapPiece.PieceType.RoofTop).ToArray();
 
-        if (nonRoofTops.Length > 0)
+        if (!nonRoofTops.Any())
         {
-            while (currentHeight < MapHeight)
-            {
-                currentHeight += SpawnMapPieces(nonRoofTops, currentHeight, piecesGameObject);
-            }
+            Debug.LogError("No 'non-roof' map pieces have been set, failed to generate building.");
+            return;
         }
 
-        if (roofPieces.Length > 0)
+        if (!roofPieces.Any())
         {
-            currentHeight += SpawnMapPieces(roofPieces, currentHeight, piecesGameObject);
+            Debug.LogError("No 'roof' map pieces have been set, failed to generate building.");
+            return;
         }
 
-        Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f));
+        while (currentHeight < MapHeight)
+        {
+            currentHeight += SpawnMapPieces(nonRoofTops, currentHeight, piecesGameObject).size.y;
+        }
+
+        var lastPieceBounds = SpawnMapPieces(roofPieces, currentHeight, piecesGameObject);
+        currentHeight += lastPieceBounds.size.y;
+
+        Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f), lastPieceBounds.size.x);
     }
 
     private GameObject GetPiecesGameObject()
@@ -67,11 +74,11 @@ public class MapGenerator : MonoBehaviour
         return transform.Find("Pieces")?.gameObject;
     }
 
-    private float SpawnMapPieces(MapPiece[] pieces, float yPosition, GameObject piecesGameObject)
+    private Bounds SpawnMapPieces(MapPiece[] pieces, float yPosition, GameObject piecesGameObject)
     {
         var randomPiece = pieces[UnityEngine.Random.Range(0, pieces.Length)];
         var newPosition = new Vector3(0.0f, yPosition, 0.0f);
         var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, piecesGameObject.transform);
-        return pieceGeometry.GetComponent<MeshRenderer>().bounds.size.y;
+        return pieceGeometry.GetComponent<MeshRenderer>().bounds;
     }
 }

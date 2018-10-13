@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 33677131128601316}
   - component: {fileID: 114550863165709130}
   - component: {fileID: 54225755524533582}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 54998319039674910}
   - component: {fileID: 145444113240698660}
   - component: {fileID: 145842498760719810}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arm_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 33108001201867182}
   - component: {fileID: 114493207124042270}
   - component: {fileID: 54806173399211884}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 33333792582521888}
   - component: {fileID: 114166072083610400}
   - component: {fileID: 54300769075706830}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 33802674566104350}
   - component: {fileID: 114169410184857856}
   - component: {fileID: 54674479599849048}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 54639971653843672}
   - component: {fileID: 145746186822761062}
   - component: {fileID: 145470262296687742}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Leg_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 145920115573663012}
   - component: {fileID: 145216845777794052}
   - component: {fileID: 145437967804422630}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Head_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 33261828716005650}
   - component: {fileID: 114250333087140924}
   - component: {fileID: 54626630734190116}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 33614446991053332}
   - component: {fileID: 114702000557653120}
   - component: {fileID: 54091145541765278}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 54227736462787794}
   - component: {fileID: 145336129291008198}
   - component: {fileID: 145873325855212598}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arm_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 136162445375542786}
   - component: {fileID: 145584831833227564}
   - component: {fileID: 145247671644105372}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 54734760535529338}
   - component: {fileID: 145075333486103774}
   - component: {fileID: 145354960495021042}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Leg_Physics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1323,10 +1323,10 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1101223842729738}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.03, y: 0.55, z: 0.66}
+  m_Size: {x: 0.85, y: 0.3, z: 0.3}
   m_Center: {x: -0.31, y: 0, z: -0.06}
 --- !u!81 &81658174312106628
 AudioListener:
@@ -1346,10 +1346,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d72c1203149d074398b9fee2bcb7829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HorizontalSpeed: 5
+  HorizontalSpeed: 7.5
   StartFallSpeed: 4
   MaxFallSpeed: 25
   TimeToTerminalVelocity: 5
+  LeanRotationScale: 1
+  KillPlayerOnBodyCollision: 1
 --- !u!114 &114088946080434548
 MonoBehaviour:
   m_ObjectHideFlags: 1
