@@ -5,7 +5,7 @@ public class ChaseCamera : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public Rigidbody FollowTarget;
+    public PlayerController FollowTarget;
 
     /// <summary>
     /// 
@@ -22,8 +22,8 @@ public class ChaseCamera : MonoBehaviour
     /// </summary>
     public void Update()
     {
-        var speed = FollowTarget.velocity.magnitude;
-        var offset = Vector3.Lerp(CameraOffsetMin, CameraOffsetMax, speed * 0.02f);
+        var speed = 0.0f;
+        var offset = Vector3.Lerp(CameraOffsetMin, CameraOffsetMax, speed);
         transform.position = FollowTarget.transform.position + offset;
     }
 }

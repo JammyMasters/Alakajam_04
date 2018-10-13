@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public GameObject Player;
+    public PlayerController Player;
 
     /// <summary>
     /// 
@@ -43,7 +43,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         currentHeight += SpawnMapPiece(roofPieces, currentHeight);
-        Player.transform.position = new Vector3(-1.0f, currentHeight + 5.0f, -4.5f);
+        Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f));
 
         yield break;
     }

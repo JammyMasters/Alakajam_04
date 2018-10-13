@@ -13,27 +13,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Bool_keys: []
   m_Int_keys:
+  - pbHandleAlignment
   - pbDefaultSelectionMode
   - pbDefaultEditLevel
   - pb_GIWorkflowMode
-  - pbHandleAlignment
   m_Float_keys:
   - pbEditorScroll.x
   - pbEditorScroll.y
-  m_String_keys:
-  - pbVertexColorPrefs1
-  - pbVertexColorPrefs2
-  - pbVertexColorPrefs7
+  m_String_keys: []
   m_Color_keys: []
   m_Material_keys: []
   m_Bool_values: 
-  m_Int_values: 02000000000000000100000001000000
+  m_Int_values: 01000000020000000100000001000000
   m_Float_values:
   - 0
   - 0
-  m_String_values:
-  - RGBA(1.000, 0.000, 0.000, 1.000)
-  - RGBA(0.000, 0.000, 1.000, 1.000)
-  - RGBA(1.000, 0.879, 0.759, 1.000)
+  m_String_values: []
   m_Color_values: []
   m_Material_values: []
