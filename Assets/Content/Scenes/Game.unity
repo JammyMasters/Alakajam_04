@@ -12174,7 +12174,7 @@ GameObject:
   - component: {fileID: 359961690}
   - component: {fileID: 359961691}
   m_Layer: 0
-  m_Name: StateMachine
+  m_Name: State Machine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12512,7 +12512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 420049751}
   m_Layer: 0
-  m_Name: GameUI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35021,7 +35021,7 @@ GameObject:
   - component: {fileID: 969593473}
   - component: {fileID: 969593474}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

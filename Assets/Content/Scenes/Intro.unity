@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 906108296}
   - component: {fileID: 906108297}
   m_Layer: 0
-  m_Name: IntroUI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
