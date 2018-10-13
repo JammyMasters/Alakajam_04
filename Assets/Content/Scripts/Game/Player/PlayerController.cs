@@ -130,8 +130,6 @@ public class PlayerController : MonoBehaviour
         var rotationTime = Time.time - m_startRotationTime;
         m_playerRotation = Vector3.Lerp(m_playerSourceRotation, m_playerTargetRotation, rotationTime * LeanRotationScale);
 
-        Debug.Log("Direction: " + moveDirection + " - Time: " + rotationTime + " - Target: " + m_playerTargetRotation);
-
         if (Input.GetButtonDown("Jump"))
         {
             KillPlayer();
