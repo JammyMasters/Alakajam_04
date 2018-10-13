@@ -9,23 +9,9 @@ using UnityEngine.UI;
 // Derived from: https://github.com/genecyber/Mumbles/blob/master/Suicide-note.g
 public class SuicideNoteGenerator : MonoBehaviour
 {
-    public abstract class AssetBasedRandomValueObject
+    public abstract class MultiValuedObject
     {
-        public TextAsset Asset;
-
-        private string[] m_parsedValues;
-
-        private string[] Values
-        {
-            get
-            {
-                if (m_parsedValues == null)
-                {
-                    m_parsedValues = Asset.text.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                }
-                return m_parsedValues;
-            }
-        }
+        public abstract string[] Values { get; set; }
 
         public string Value
         {
@@ -37,35 +23,11 @@ public class SuicideNoteGenerator : MonoBehaviour
     }
 
     [Serializable]
-    public class Sections : AssetBasedRandomValueObject
-    {
-        [EnumFlags]
-        public Intention Intentions;
-
-        // Source: https://forum.unity.com/threads/multiple-enum-select-from-inspector.184729/
-        public List<Intention> ApplicableIntentions
-        {
-            get
-            {
-                var applicableGoals = new List<Intention>();
-                var goal = Enum.GetValues(typeof(Intention));
-                for (int i = 0; i < goal.Length; i++)
-                {
-                    int layer = 1 << i;
-                    if (((int)Intentions & layer) != 0)
-                    {
-                        applicableGoals.Add((Intention)goal.GetValue(i));
-                    }
-                }
-                return applicableGoals;
-            }
-        }
-    }
-
-    [Serializable]
-    public class Template : AssetBasedRandomValueObject
+    public class Template : MultiValuedObject
     {
         public string Name;
+
+        public override string[] Values { get; set; }
     }
 
     [System.Flags]
@@ -95,13 +57,170 @@ public class SuicideNoteGenerator : MonoBehaviour
 
     public Text SuicideNodeText;
 
-    public Sections[] Salutations;
+    private static readonly Dictionary<Intention, string[]> Salutations = new Dictionary<Intention, string[]>()
+    {
+        {
+            Intention.RevengeAgainstRecipient,
+            new string[] 
+            {
+                "Dear %insult% %recipient%,",
+                "To my %insult% %recipient%,"
+            }
+        },
 
-    public Sections[] Motivations;
+        {
+            Intention.RevengeAgainstTheWorld,
+            new string[]
+            {
+                "To all %insult% people out there,",
+                "Oh %insult% humanity,"
+            }
+        },
 
-    public Sections[] Closings;
+        {
+            Intention.SeekingAttention,
+            new string[]
+            {
+                "Oh, %adjective% world,",
+                "To whom it may concern,"
+            }
+        }
+    };
 
-    public Template[] Templates;
+    private static readonly Dictionary<Intention, string[]> Motivations = new Dictionary<Intention, string[]>()
+    {
+        {
+            Intention.RevengeAgainstRecipient,
+            new string[]
+            {
+                "You made me see that %reason%.",
+                "You made me realise that %reason%.",
+                "All those years by your side made me realise that %reason%.",
+                "Because of you, %reason%.",
+                "Exclusively because of you, %reason%."
+            }
+        },
+
+        {
+            Intention.RevengeAgainstTheWorld,
+            new string[]
+            {
+                "You all made me see that %reason%.",
+                "Influenced by all of you, %reason%."
+            }
+        },
+
+        {
+            Intention.SeekingAttention,
+            new string[]
+            {
+                "Love is pain, existence is pointless.",
+                "I never had the admiration I wanted in life... maybe things will be better in death."
+            }
+        }
+    };
+
+    private static readonly Dictionary<Intention, string[]> Closings = new Dictionary<Intention, string[]>()
+    {
+        {
+            Intention.RevengeAgainstRecipient,
+            new string[]
+            {
+                "May I rest in peace.",
+                "See you in the next life.",
+                "See you."
+            }
+        },
+
+        {
+            Intention.RevengeAgainstTheWorld,
+            new string[]
+            {
+                "Fuck you, %insult% world.",
+                "See you in Hell."
+            }
+        },
+
+        {
+            Intention.SeekingAttention,
+            new string[]
+            {
+                "Goodbye %adjective% world.",
+                "See you in Heaven.",
+                "My destiny awaits."
+            }
+        }
+    };
+
+    private static readonly Template[] Templates = new Template[]
+    {
+        new Template()
+        {
+            Name = "adjective",
+            Values = new string[]
+            {
+                "boring",
+                "cheerless",
+                "cruel",
+                "depressing",
+                "desolate",
+                "despicable",
+                "devilish",
+                "dreary",
+                "dull",
+                "harsh",
+                "heartless",
+                "lonely",
+                "mean",
+                "miserable",
+                "monotonous",
+                "pitiful",
+                "relentless",
+                "satanic",
+                "savage",
+                "tedious",
+                "tiresome",
+                "uncaring",
+                "unhappy",
+                "unkind",
+                "wearisome",
+                "weary",
+                "worthless",
+                "wretched"
+            }
+        },
+        new Template()
+        {
+            Name = "insult",
+            Values = new string[]
+            {
+                "fucked-up",
+                "despicable",
+                "loathsome",
+                "abject",
+                "wretched",
+                "pitiful",
+                "disgraceful",
+                "vile"
+            }
+        },
+        new Template()
+        {
+            Name = "reason",
+            Values = new string[]
+            {
+                "hell sounds interesting",
+                "hell would be more fun than this place",
+                "death sounds like fun",
+                "I like living on the edge",
+                "life is not worth living",
+                "life is boring",
+                "the voices in my head tell me to kill myself",
+                "I have learned everything there is to learn here",
+                "between Heaven and Hell, I choose the latter"
+            }
+        }
+    };
 
     public void Start()
     {
@@ -119,9 +238,9 @@ public class SuicideNoteGenerator : MonoBehaviour
 
     private void GenerateText()
     {
-        var @string = GetSectionString(Salutations) + Environment.NewLine;
-        @string += GetSectionString(Motivations) + Environment.NewLine;
-        @string += GetSectionString(Closings);
+        var @string = ReplaceTemplates(Salutations[NoteIntention]) + Environment.NewLine;
+        @string += ReplaceTemplates(Motivations[NoteIntention]) + Environment.NewLine;
+        @string += ReplaceTemplates(Closings[NoteIntention]);
         SuicideNodeText.text = @string;
     }
 
@@ -137,14 +256,9 @@ public class SuicideNoteGenerator : MonoBehaviour
         }
     }
 
-    private string GetSectionString(IEnumerable<Sections> elements)
+    private string ReplaceTemplates(string[] values)
     {
-        var section = elements.Where(x => x.ApplicableIntentions.Contains(NoteIntention)).ToArray();
-        if (section.Length == 0)
-        {
-            return string.Empty;
-        }
-        var @string = section[UnityEngine.Random.Range(0, section.Length)].Value;
+        var @string = values[UnityEngine.Random.Range(0, values.Length)];
         @string = ReplaceDynamicTemplates(@string);
         @string = ReplaceStaticTemplates(@string);
         return @string;
