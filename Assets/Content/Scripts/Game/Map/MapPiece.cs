@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Map Piece", menuName = "Suicide/Map Piece", order = 1)]
+[CreateAssetMenu(fileName = "Map Piece", menuName = "SuiSALTO/Map Piece", order = 1)]
 public class MapPiece : ScriptableObject
 {
     public enum PieceType

@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         transform.localEulerAngles = m_playerRotation;
     }
 
-    public void Activate(Vector3 startPosition)
+    public void Spawn(Vector3 startPosition)
     {
         m_isActive = true;
         m_playerPosition = startPosition;

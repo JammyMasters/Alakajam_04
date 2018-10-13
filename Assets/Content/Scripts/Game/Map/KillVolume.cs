@@ -2,13 +2,15 @@
 
 public class KillVolume : MonoBehaviour
 {
+    public GameStateMachine GameStateMachine;
+
     private void OnTriggerEnter(Collider other)
     {
         var playerController = other.GetComponent<PlayerController>();
         if (playerController != null)
         {
             playerController.KillPlayer();
-            enabled = false;
+            GameStateMachine.Transition(GameState.NEWSPAPER_FLASH);
         }
     }
 }
