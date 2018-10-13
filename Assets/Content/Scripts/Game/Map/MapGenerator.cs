@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -12,8 +13,6 @@ public class MapGenerator : MonoBehaviour
     public PlayerController Player;
 
     public bool GenerateInEditMode = false;
-
-    private GameObject m_piecesGameObject;
 
     public void Start()
     {
@@ -34,13 +33,14 @@ public class MapGenerator : MonoBehaviour
 
     private void Generate()
     {
-        if (m_piecesGameObject != null)
+        var piecesGameObject = GetPiecesGameObject();
+        if (piecesGameObject != null)
         {
-            DestroyImmediate(m_piecesGameObject);
+            DestroyImmediate(piecesGameObject);
         }
 
-        m_piecesGameObject = new GameObject("Pieces");
-        m_piecesGameObject.transform.parent = transform;
+        piecesGameObject = new GameObject("Pieces");
+        piecesGameObject.transform.parent = transform;
 
         var currentHeight = 0.0f;
         var nonRoofTops = MapPieces.Where(x => x.Type != MapPiece.PieceType.RoofTop).ToArray();
@@ -50,23 +50,28 @@ public class MapGenerator : MonoBehaviour
         {
             while (currentHeight < MapHeight)
             {
-                currentHeight += SpawnMapPieces(nonRoofTops, currentHeight);
+                currentHeight += SpawnMapPieces(nonRoofTops, currentHeight, piecesGameObject);
             }
         }
 
         if (roofPieces.Length > 0)
         {
-            currentHeight += SpawnMapPieces(roofPieces, currentHeight);
+            currentHeight += SpawnMapPieces(roofPieces, currentHeight, piecesGameObject);
         }
 
         Player.Activate(new Vector3(-2.0f, currentHeight + 5.0f, -4.5f));
     }
 
-    private float SpawnMapPieces(MapPiece[] pieces, float yPosition)
+    private GameObject GetPiecesGameObject()
     {
-        var randomPiece = pieces[Random.Range(0, pieces.Length)];
+        return transform.Find("Pieces")?.gameObject;
+    }
+
+    private float SpawnMapPieces(MapPiece[] pieces, float yPosition, GameObject piecesGameObject)
+    {
+        var randomPiece = pieces[UnityEngine.Random.Range(0, pieces.Length)];
         var newPosition = new Vector3(0.0f, yPosition, 0.0f);
-        var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, m_piecesGameObject.transform);
+        var pieceGeometry = Instantiate(randomPiece.Prefab, newPosition, Quaternion.identity, piecesGameObject.transform);
         return pieceGeometry.GetComponent<MeshRenderer>().bounds.size.y;
     }
 }
