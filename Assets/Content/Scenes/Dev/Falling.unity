@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.60784316, g: 0.58431375, b: 0.5254902, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.05
+  m_FogDensity: 0.03
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -8095,17 +8095,9 @@ MonoBehaviour:
     angleError: 8
     areaError: 15
   dontDestroyMeshOnDelete: 0
-  m_selectedFaces: 04000000
-  m_SelectedEdges:
-  - x: 16
-    y: 17
-  - x: 18
-    y: 16
-  - x: 17
-    y: 19
-  - x: 19
-    y: 18
-  m_selectedTriangles: 10000000110000001200000013000000
+  m_selectedFaces: 
+  m_SelectedEdges: []
+  m_selectedTriangles: 
 --- !u!33 &501179521
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -11839,7 +11831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5e8f31bd815184fae7e026ad0cbf2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapHeight: 500
+  MapHeight: 800
   MapPieces:
   - {fileID: 11400000, guid: 7d81bcf670cc28b4ab71fee29c126e31, type: 2}
   - {fileID: 11400000, guid: 7d5b1e34660130d47bcdca5090e3571e, type: 2}
@@ -19848,10 +19840,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d72c1203149d074398b9fee2bcb7829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HorizontalSpeed: 5
+  HorizontalSpeed: 10
   StartFallSpeed: 4
   MaxFallSpeed: 25
   TimeToTerminalVelocity: 5
+  LeanRotationScale: 5
 --- !u!65 &1921201417
 BoxCollider:
   m_ObjectHideFlags: 0

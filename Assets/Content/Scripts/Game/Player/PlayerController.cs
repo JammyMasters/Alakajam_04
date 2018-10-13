@@ -3,8 +3,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private enum MoveDirection
+    {
+        None,
+        Left,
+        Right
+    }
+
     private bool m_isActive;
     private Vector3 m_playerPosition;
+
+    private MoveDirection m_moveDirection = MoveDirection.None;
+    private Vector3 m_playerRotation;
+    private Vector3 m_playerOriginalRotation;
+    private Vector3 m_playerSourceRotation;
+    private Vector3 m_playerTargetRotation;
+    private float m_startRotationTime;
+
     private float m_lastSpeedReset;
     private SpringJoint[] m_limbJoints;
 
@@ -12,7 +27,8 @@ public class PlayerController : MonoBehaviour
     public float StartFallSpeed = 2.0f;
     public float MaxFallSpeed = 10.0f;
     public float TimeToTerminalVelocity = 2.0f;
-    
+    public float LeanRotationScale = 1.0f;
+
     public void Start()
     {
         m_limbJoints = GetComponentsInChildren<SpringJoint>();
@@ -28,6 +44,7 @@ public class PlayerController : MonoBehaviour
         HandleUserInput();
         HandleGravity();
         transform.localPosition = m_playerPosition;
+        transform.localEulerAngles = m_playerRotation;
     }
 
     public void Activate(Vector3 startPosition)
@@ -36,6 +53,11 @@ public class PlayerController : MonoBehaviour
         m_playerPosition = startPosition;
         m_lastSpeedReset = Time.time;
         transform.localPosition = m_playerPosition;
+        m_playerRotation = transform.localEulerAngles;
+        m_playerOriginalRotation = m_playerRotation;
+        m_playerSourceRotation = m_playerRotation;
+        m_playerTargetRotation = m_playerRotation;
+        m_startRotationTime = Time.time;
     }
 
     public void KillPlayer()
@@ -79,8 +101,36 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleUserInput()
     {
+        var horizontalInput = Input.GetAxis("Horizontal");
+
+        var moveDirection = MoveDirection.None;
+        var rotateTarget = Vector3.zero;
+        if (horizontalInput < 0.0f)
+        {
+            moveDirection = MoveDirection.Left;
+            rotateTarget = new Vector3(0.0f, -10.0f, 0.0f);
+        }
+        else if (horizontalInput > 0.0f)
+        {
+            moveDirection = MoveDirection.Right;
+            rotateTarget = new Vector3(0.0f, 10.0f, 0.0f);
+        }
+
         var moveHorizontal = Input.GetAxis("Horizontal") * HorizontalSpeed;
         m_playerPosition += new Vector3(0.0f, 0.0f, moveHorizontal * Time.deltaTime);
+
+        if (moveDirection != m_moveDirection)
+        {
+            m_startRotationTime = Time.time;
+            m_playerSourceRotation = m_playerRotation;
+            m_playerTargetRotation = m_playerOriginalRotation + rotateTarget;
+            m_moveDirection = moveDirection;
+        }
+
+        var rotationTime = Time.time - m_startRotationTime;
+        m_playerRotation = Vector3.Lerp(m_playerSourceRotation, m_playerTargetRotation, rotationTime * LeanRotationScale);
+
+        Debug.Log("Direction: " + moveDirection + " - Time: " + rotationTime + " - Target: " + m_playerTargetRotation);
 
         if (Input.GetButtonDown("Jump"))
         {
