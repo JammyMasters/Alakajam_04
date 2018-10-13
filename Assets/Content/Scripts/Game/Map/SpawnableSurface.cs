@@ -2,22 +2,14 @@
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
+[ExecuteInEditMode]
 public class SpawnableSurface : MonoBehaviour
 {
-    private MeshRenderer m_meshRenderer;
+    public float Width;
 
-    private float Top => m_meshRenderer.bounds.max.y;
-
-    private float Width => m_meshRenderer.bounds.size.x * Scale.x;
-
-    private float Height => m_meshRenderer.bounds.size.z * Scale.y;
+    public float Depth;
 
     public float CellSize;
-
-    public Vector2 Scale = Vector2.one;
-
-    public Vector2 Pivot;
 
     private int m_gridWidth;
 
@@ -40,16 +32,15 @@ public class SpawnableSurface : MonoBehaviour
             return;
         }
 
-        m_meshRenderer = gameObject.GetComponent<MeshRenderer>();
         m_gridWidth = (int)Math.Floor(Width / CellSize);
-        m_gridHeight = (int)Math.Floor(Height / CellSize);
+        m_gridHeight = (int)Math.Floor(Depth / CellSize);
         m_grid = new bool[m_gridWidth * m_gridHeight];
         for (int i = 0; i < m_grid.Length; i++)
         {
             m_grid[i] = false;
         }
         m_halfWidth = Width * 0.5f;
-        m_halfDepth = Height * 0.5f;
+        m_halfDepth = Depth * 0.5f;
 
         m_initialised = true;
     }
@@ -72,14 +63,14 @@ public class SpawnableSurface : MonoBehaviour
             position = Vector3.zero;
             return false;
         }
-        int x, y;
+        int x, z;
         do
         {
             x = UnityEngine.Random.Range(0, m_gridWidth);
-            y = UnityEngine.Random.Range(0, m_gridHeight);
-        } while (m_grid[y * m_gridWidth + x]);
-        m_grid[y * m_gridWidth + x] = true;
-        position = new Vector3(Pivot.x + x * CellSize - m_halfWidth, Top, Pivot.y + y * CellSize - m_halfDepth);
+            z = UnityEngine.Random.Range(0, m_gridHeight);
+        } while (m_grid[z * m_gridWidth + x]);
+        m_grid[z * m_gridWidth + x] = true;
+        position = new Vector3(transform.position.x + x * CellSize - m_halfWidth, transform.position.y, transform.position.z + z * CellSize - m_halfDepth);
         return true;
     }
 }

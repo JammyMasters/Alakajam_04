@@ -145,7 +145,7 @@ public class SuicideNoteGenerator : MonoBehaviour
             Intention.SeekingAttention,
             new string[]
             {
-                "Goodbye %adjective% world.",
+                "Goodbye.",
                 "See you in Heaven.",
                 "My destiny awaits."
             }
