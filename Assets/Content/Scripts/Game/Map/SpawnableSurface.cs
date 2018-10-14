@@ -21,7 +21,7 @@ public class SpawnableSurface : MonoBehaviour
 
     private float m_halfDepth;
 
-    private bool m_initialised;
+    private bool m_initialised = false;
 
     public bool InitialiseInEditMode;
 
@@ -47,11 +47,26 @@ public class SpawnableSurface : MonoBehaviour
 
     public void Update()
     {
-        if (Application.isEditor && InitialiseInEditMode)
+        if (!Application.isEditor)
+        {
+            return;
+        }
+            
+        if (!m_initialised || InitialiseInEditMode)
         {
             Initialise(true);
             InitialiseInEditMode = false;
         }
+
+        var center = transform.position;
+        var topLeft = new Vector3(transform.position.x - m_halfWidth, transform.position.y, transform.position.z - m_halfDepth);
+        var topRight = new Vector3(transform.position.x + m_halfWidth, transform.position.y, transform.position.z - m_halfDepth);
+        var bottomLeft = new Vector3(transform.position.x - m_halfWidth, transform.position.y, transform.position.z + m_halfDepth);
+        var bottomRight = new Vector3(transform.position.x + m_halfWidth, transform.position.y, transform.position.z + m_halfDepth);
+        Debug.DrawLine(topLeft, topRight, Color.green);
+        Debug.DrawLine(topRight, bottomRight, Color.green);
+        Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+        Debug.DrawLine(bottomLeft, topLeft, Color.green);
     }
 
     public bool GetUnoccupiedPosition(out Vector3 position)

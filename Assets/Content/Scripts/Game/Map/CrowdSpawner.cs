@@ -10,25 +10,25 @@ public class CrowdSpawner : MonoBehaviour
     public class SuicideNoteRecipientPrefabOptions
     {
         [EnumFlags]
-        public SuicideNoteGenerator.Recipient Recipients;
+        public SuicideNoteRecipient Recipients;
 
         public GameObject[] Prefabs;
 
         public bool IsEmpty => Prefabs.Length == 0;
 
         // Source: https://forum.unity.com/threads/multiple-enum-select-from-inspector.184729/
-        public List<SuicideNoteGenerator.Recipient> ApplicableRecipients
+        public List<SuicideNoteRecipient> ApplicableRecipients
         {
             get
             {
-                var applicableRecipients = new List<SuicideNoteGenerator.Recipient>();
-                var recipients = Enum.GetValues(typeof(SuicideNoteGenerator.Recipient));
+                var applicableRecipients = new List<SuicideNoteRecipient>();
+                var recipients = Enum.GetValues(typeof(SuicideNoteRecipient));
                 for (int i = 0; i < recipients.Length; i++)
                 {
                     int layer = 1 << i;
                     if (((int)Recipients & layer) != 0)
                     {
-                        applicableRecipients.Add((SuicideNoteGenerator.Recipient)recipients.GetValue(i));
+                        applicableRecipients.Add((SuicideNoteRecipient)recipients.GetValue(i));
                     }
                 }
                 return applicableRecipients;
@@ -83,7 +83,7 @@ public class CrowdSpawner : MonoBehaviour
         crowdGameObject.transform.parent = transform;
 
         var maxNumberOfPeople = MaxNumberOfPeople;
-        if (SuicideNoteGenerator.NoteIntention == SuicideNoteGenerator.Intention.RevengeAgainstRecipient)
+        if (SuicideNote.Instance.Intention == SuicideNoteIntention.RevengeAgainstRecipient)
         {
             SpawnSuicideNoteRecipient(crowdGameObject);
             maxNumberOfPeople--;
@@ -107,7 +107,7 @@ public class CrowdSpawner : MonoBehaviour
 
     private void SpawnSuicideNoteRecipient(GameObject crowdGameObject)
     {
-        var prefabOptions = PrefabOptionsPerRecipientType.Where(x => x.ApplicableRecipients.Contains(SuicideNoteGenerator.NoteRecipient)).FirstOrDefault();
+        var prefabOptions = PrefabOptionsPerRecipientType.Where(x => x.ApplicableRecipients.Contains(SuicideNote.Instance.Recipient)).FirstOrDefault();
         if (prefabOptions == null)
         {
             return;

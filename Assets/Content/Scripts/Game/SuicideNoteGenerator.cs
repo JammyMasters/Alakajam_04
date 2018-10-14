@@ -30,37 +30,12 @@ public class SuicideNoteGenerator : MonoBehaviour
         public override string[] Values { get; set; }
     }
 
-    [System.Flags]
-    public enum Intention
-    {
-        RevengeAgainstRecipient,
-        RevengeAgainstTheWorld,
-        SeekingAttention
-    }
-
-    public enum Recipient : uint
-    {
-        Undefined = 1,
-        Mom,
-        Dad,
-        Son,
-        Daughter,
-        Wife,
-        Husband,
-        Friend,
-        Boss
-    }
-
-    public static Intention NoteIntention { get; private set; }
-
-    public static Recipient NoteRecipient { get; private set; }
-
     public Text SuicideNodeText;
 
-    private static readonly Dictionary<Intention, string[]> Salutations = new Dictionary<Intention, string[]>()
+    private static readonly Dictionary<SuicideNoteIntention, string[]> Salutations = new Dictionary<SuicideNoteIntention, string[]>()
     {
         {
-            Intention.RevengeAgainstRecipient,
+            SuicideNoteIntention.RevengeAgainstRecipient,
             new string[] 
             {
                 "Dear %insult% %recipient%,",
@@ -69,7 +44,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.RevengeAgainstTheWorld,
+            SuicideNoteIntention.RevengeAgainstTheWorld,
             new string[]
             {
                 "To all %insult% people out there,",
@@ -78,7 +53,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.SeekingAttention,
+            SuicideNoteIntention.SeekingAttention,
             new string[]
             {
                 "Oh, %adjective% world,",
@@ -87,10 +62,10 @@ public class SuicideNoteGenerator : MonoBehaviour
         }
     };
 
-    private static readonly Dictionary<Intention, string[]> Motivations = new Dictionary<Intention, string[]>()
+    private static readonly Dictionary<SuicideNoteIntention, string[]> Motivations = new Dictionary<SuicideNoteIntention, string[]>()
     {
         {
-            Intention.RevengeAgainstRecipient,
+            SuicideNoteIntention.RevengeAgainstRecipient,
             new string[]
             {
                 "You made me see that %reason%.",
@@ -102,7 +77,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.RevengeAgainstTheWorld,
+            SuicideNoteIntention.RevengeAgainstTheWorld,
             new string[]
             {
                 "You all made me see that %reason%.",
@@ -111,7 +86,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.SeekingAttention,
+            SuicideNoteIntention.SeekingAttention,
             new string[]
             {
                 "Love is pain, existence is pointless.",
@@ -120,10 +95,10 @@ public class SuicideNoteGenerator : MonoBehaviour
         }
     };
 
-    private static readonly Dictionary<Intention, string[]> Closings = new Dictionary<Intention, string[]>()
+    private static readonly Dictionary<SuicideNoteIntention, string[]> Closings = new Dictionary<SuicideNoteIntention, string[]>()
     {
         {
-            Intention.RevengeAgainstRecipient,
+            SuicideNoteIntention.RevengeAgainstRecipient,
             new string[]
             {
                 "May I rest in peace.",
@@ -133,7 +108,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.RevengeAgainstTheWorld,
+            SuicideNoteIntention.RevengeAgainstTheWorld,
             new string[]
             {
                 "Fuck you, %insult% world.",
@@ -142,7 +117,7 @@ public class SuicideNoteGenerator : MonoBehaviour
         },
 
         {
-            Intention.SeekingAttention,
+            SuicideNoteIntention.SeekingAttention,
             new string[]
             {
                 "Goodbye.",
@@ -224,7 +199,7 @@ public class SuicideNoteGenerator : MonoBehaviour
 
     public void Start()
     {
-        RandomiseContent();
+        SuicideNote.Instance.RandomiseContent();
         GenerateText();
     }
 
@@ -238,22 +213,10 @@ public class SuicideNoteGenerator : MonoBehaviour
 
     private void GenerateText()
     {
-        var @string = ReplaceTemplates(Salutations[NoteIntention]) + Environment.NewLine;
-        @string += ReplaceTemplates(Motivations[NoteIntention]) + Environment.NewLine;
-        @string += ReplaceTemplates(Closings[NoteIntention]);
+        var @string = ReplaceTemplates(Salutations[SuicideNote.Instance.Intention]) + Environment.NewLine;
+        @string += ReplaceTemplates(Motivations[SuicideNote.Instance.Intention]) + Environment.NewLine;
+        @string += ReplaceTemplates(Closings[SuicideNote.Instance.Intention]);
         SuicideNodeText.text = @string;
-    }
-
-    private void RandomiseContent()
-    {
-        var intentions = Enum.GetValues(typeof(Intention));
-        NoteIntention = (Intention)intentions.GetValue(UnityEngine.Random.Range(0, intentions.Length));
-
-        if (NoteIntention == Intention.RevengeAgainstRecipient)
-        {
-            var recipients = Enum.GetValues(typeof(Recipient));
-            NoteRecipient = (Recipient)recipients.GetValue(UnityEngine.Random.Range(1, recipients.Length));
-        }
     }
 
     private string ReplaceTemplates(string[] values)
@@ -266,7 +229,7 @@ public class SuicideNoteGenerator : MonoBehaviour
 
     private string ReplaceStaticTemplates(string @string)
     {
-        return Regex.Replace(@string, $"%recipient%", NoteRecipient.ToString(), RegexOptions.Multiline | RegexOptions.IgnoreCase);
+        return Regex.Replace(@string, $"%recipient%", SuicideNote.Instance.Recipient.ToString(), RegexOptions.Multiline | RegexOptions.IgnoreCase);
     }
 
     private string ReplaceDynamicTemplates(string @string)
